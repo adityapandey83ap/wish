@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    /* =====================================================
-       1. COUNTDOWN
-       Target: 30 August 2026, 00:00:00 Nepal time (+05:45)
-    ===================================================== */
+    
     const targetTime = new Date('2026-08-30T00:00:00+05:45').getTime();
 
     const daysEl = document.getElementById('days');
@@ -47,9 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    /* =====================================================
-       2. PARTICLES
-    ===================================================== */
     const canvas = document.getElementById('particle-canvas');
     const ctx = canvas.getContext('2d');
     let width = window.innerWidth;
@@ -108,9 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     renderParticles();
 
-    /* =====================================================
-       3. BUTTERFLIES
-    ===================================================== */
     const butterflyContainer = document.getElementById('butterfly-container');
     const butterflyColors = [
         'rgba(216,180,226,.95)',
@@ -161,11 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     animateButterflies();
 
-    /* =====================================================
-       4. BUTTON / LOVE LOCK
-       Before zero: show the divine waiting message.
-       At zero: lock opens and button navigates to main.html.
-    ===================================================== */
+
     openBtn.addEventListener('click', () => {
         if (isTransitioning) return;
 
