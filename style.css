@@ -36,7 +36,6 @@ body{
 
 #butterfly-container{position:fixed;inset:0;width:100%;height:100%;z-index:8;pointer-events:none;overflow:hidden}
 
-/* IMPORTANT: fixed + inset + flex gives one reliable centering system. */
 .ui-container{
     position:fixed;
     inset:0;
@@ -51,7 +50,6 @@ body{
     overflow:hidden;
 }
 
-/* No transform is applied to this panel by JS. This prevents the old parallax bug. */
 .glass-panel{
     position:relative;
     width:min(550px,calc(100vw - 32px));
@@ -92,14 +90,12 @@ body{
 .btn-glow{position:absolute;z-index:1;left:50%;top:50%;width:0;height:0;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(216,180,226,.4),transparent 70%);transition:width .6s ease,height .6s ease}
 .open-btn:hover .btn-glow{width:300px;height:300px}
 
-/* Transparent love-lock sitting ON TOP of the existing button. */
 .love-lock{position:absolute;z-index:5;left:50%;top:50%;width:64px;height:66px;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 0 8px rgba(243,229,171,.35));transition:transform .9s cubic-bezier(.2,.85,.2,1),opacity .65s ease}
 .lock-body{position:absolute;left:8px;bottom:0;width:48px;height:40px;border:2px solid rgba(255,255,255,.65);border-radius:10px;background:rgba(216,180,226,.22);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:grid;place-items:center;box-shadow:inset 0 1px rgba(255,255,255,.35)}
 .lock-keyhole{font-size:17px;color:#2d183b;text-shadow:0 0 8px rgba(243,229,171,.8)}
 .lock-shackle{position:absolute;left:17px;top:2px;width:31px;height:34px;border:3px solid rgba(243,229,171,.9);border-bottom:0;border-radius:18px 18px 0 0}
 .lock-aura{position:absolute;inset:-16px;border-radius:50%;background:radial-gradient(circle,rgba(243,229,171,.16),transparent 68%);z-index:-1;animation:lockPulse 2s ease-in-out infinite}
 
-/* Lock is connected to timer: it disappears only when countdown reaches zero. */
 body.unlocked .love-lock{transform:translate(-50%,-95px) rotate(-16deg) scale(.65);opacity:0}
 body.unlocked .open-btn{border-color:rgba(243,229,171,.55);box-shadow:0 8px 30px rgba(0,0,0,.3),0 0 35px rgba(243,229,171,.25)}
 
