@@ -1,0 +1,161 @@
+:root{
+    --bg-deep:#05020a;
+    --bg-mid:#140b24;
+    --bg-light:#24143a;
+    --accent-lavender:#d8b4e2;
+    --accent-champagne:#f3e5ab;
+    --accent-cyan:#aee6e6;
+    --font-heading:'Cinzel',serif;
+    --font-sans:'Montserrat',sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden}
+body{
+    position:relative;
+    width:100vw;
+    height:100dvh;
+    min-height:100dvh;
+    background:var(--bg-deep);
+    color:#fff;
+    font-family:var(--font-sans);
+    overflow:hidden;
+}
+
+.ambient-background{
+    position:fixed;
+    inset:-50%;
+    width:200%;height:200%;
+    z-index:0;
+    pointer-events:none;
+    background:radial-gradient(circle at 50% 50%,var(--bg-light) 0%,var(--bg-mid) 30%,var(--bg-deep) 70%);
+    animation:slowDrift 20s ease-in-out infinite alternate;
+}
+
+#particle-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0;animation:simpleFadeIn 2.5s ease forwards .3s}
+
+#butterfly-container{position:fixed;inset:0;width:100%;height:100%;z-index:8;pointer-events:none;overflow:hidden}
+
+/* IMPORTANT: fixed + inset + flex gives one reliable centering system. */
+.ui-container{
+    position:fixed;
+    inset:0;
+    width:100vw;
+    height:100dvh;
+    min-height:100dvh;
+    z-index:10;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+    overflow:hidden;
+}
+
+/* No transform is applied to this panel by JS. This prevents the old parallax bug. */
+.glass-panel{
+    position:relative;
+    width:min(550px,calc(100vw - 32px));
+    max-height:calc(100dvh - 32px);
+    margin:0;
+    flex:0 1 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:clamp(1.7rem,5vh,3.2rem) clamp(1rem,5vw,3rem);
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:24px;
+    background:rgba(255,255,255,.025);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 30px 70px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.11);
+    overflow:visible;
+}
+
+.label{font-size:clamp(.52rem,1.8vw,.75rem);letter-spacing:clamp(.12em,.7vw,.28em);color:var(--accent-champagne);text-transform:uppercase;margin-bottom:clamp(.7rem,2vh,1.2rem);opacity:.82;line-height:1.5}
+.title{font-family:var(--font-heading);font-size:clamp(2.15rem,7.5vw,4rem);font-weight:400;line-height:1.08;margin-bottom:.75rem;background:linear-gradient(90deg,#fff,var(--accent-champagne),#fff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 40px rgba(243,229,171,.2)}
+.subtitle{font-size:clamp(.72rem,2.2vw,1rem);font-weight:300;color:rgba(255,255,255,.7);letter-spacing:.04em;line-height:1.55;max-width:440px;margin-bottom:clamp(1.2rem,3vh,2rem)}
+
+.countdown-timer{display:flex;align-items:center;justify-content:center;width:min(100%,430px);gap:clamp(.28rem,1.8vw,.9rem);padding:.7rem clamp(.55rem,3vw,1.3rem);margin-bottom:clamp(1.3rem,3.5vh,2.3rem);background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.07);border-radius:14px}
+.time-block{min-width:clamp(34px,8vw,48px);display:flex;flex-direction:column;align-items:center}
+.time-block span{font-family:var(--font-heading);font-size:clamp(1rem,3.7vw,1.4rem);color:var(--accent-champagne);font-weight:500;font-variant-numeric:tabular-nums}
+.time-block small{font-size:clamp(.43rem,1.4vw,.62rem);text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.48);margin-top:3px}
+.separator{font-size:1.05rem;color:rgba(255,255,255,.28);margin-top:-10px}
+
+.button-wrapper{position:relative;width:min(100%,360px);height:68px;display:flex;align-items:center;justify-content:center}
+.open-btn{position:relative;z-index:2;width:100%;height:64px;border:1px solid rgba(255,255,255,.2);border-radius:40px;background:rgba(255,255,255,.035);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;gap:13px;color:#fff;cursor:pointer;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.25),0 0 25px rgba(216,180,226,.11);animation:breathe 4s ease-in-out infinite alternate;transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease}
+.open-btn:hover{transform:translateY(-2px);border-color:rgba(216,180,226,.6);box-shadow:0 10px 30px rgba(0,0,0,.3),0 0 35px rgba(216,180,226,.28)}
+.open-btn:active{transform:scale(.98)}
+.btn-text{position:relative;z-index:4;font-size:clamp(.55rem,1.9vw,.78rem);font-weight:500;letter-spacing:.17em;white-space:nowrap}
+.btn-heart{position:relative;z-index:4;color:var(--accent-champagne);font-size:.78rem;opacity:.8}
+.btn-glow{position:absolute;z-index:1;left:50%;top:50%;width:0;height:0;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(216,180,226,.4),transparent 70%);transition:width .6s ease,height .6s ease}
+.open-btn:hover .btn-glow{width:300px;height:300px}
+
+/* Transparent love-lock sitting ON TOP of the existing button. */
+.love-lock{position:absolute;z-index:5;left:50%;top:50%;width:64px;height:66px;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 0 8px rgba(243,229,171,.35));transition:transform .9s cubic-bezier(.2,.85,.2,1),opacity .65s ease}
+.lock-body{position:absolute;left:8px;bottom:0;width:48px;height:40px;border:2px solid rgba(255,255,255,.65);border-radius:10px;background:rgba(216,180,226,.22);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:grid;place-items:center;box-shadow:inset 0 1px rgba(255,255,255,.35)}
+.lock-keyhole{font-size:17px;color:#2d183b;text-shadow:0 0 8px rgba(243,229,171,.8)}
+.lock-shackle{position:absolute;left:17px;top:2px;width:31px;height:34px;border:3px solid rgba(243,229,171,.9);border-bottom:0;border-radius:18px 18px 0 0}
+.lock-aura{position:absolute;inset:-16px;border-radius:50%;background:radial-gradient(circle,rgba(243,229,171,.16),transparent 68%);z-index:-1;animation:lockPulse 2s ease-in-out infinite}
+
+/* Lock is connected to timer: it disappears only when countdown reaches zero. */
+body.unlocked .love-lock{transform:translate(-50%,-95px) rotate(-16deg) scale(.65);opacity:0}
+body.unlocked .open-btn{border-color:rgba(243,229,171,.55);box-shadow:0 8px 30px rgba(0,0,0,.3),0 0 35px rgba(243,229,171,.25)}
+
+.divine-message{width:min(100%,430px);max-height:0;overflow:hidden;opacity:0;transform:translateY(12px);margin-top:0;text-align:center;transition:max-height .9s ease,opacity .8s ease,transform .8s ease,margin-top .8s ease}
+body.message-visible .divine-message{max-height:140px;opacity:1;transform:translateY(0);margin-top:1.2rem}
+.message-sparkle{font-family:var(--font-heading);font-size:1.35rem;color:var(--accent-champagne);animation:sparkle 2s ease-in-out infinite}
+.divine-message p{margin-top:.3rem;font-family:var(--font-heading);font-size:clamp(.9rem,2.7vw,1.2rem);line-height:1.5;color:var(--accent-champagne)}
+.divine-message span{display:block;margin-top:.45rem;font-size:.62rem;letter-spacing:.08em;color:rgba(255,255,255,.52)}
+.lock-status{margin-top:.75rem;font-size:.58rem;letter-spacing:.08em;color:rgba(255,255,255,.38);transition:opacity .4s ease}
+body.unlocked .lock-status{color:rgba(243,229,171,.7)}
+
+#transition-overlay{position:fixed;left:50%;top:50%;width:0;height:0;z-index:999;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#fff 0%,var(--accent-champagne) 38%,transparent 80%);opacity:0;pointer-events:none;transition:width 1.3s cubic-bezier(.5,0,.1,1),height 1.3s cubic-bezier(.5,0,.1,1),opacity .8s ease}
+body.transitioning #transition-overlay{width:300vmax;height:300vmax;opacity:1}
+body.transitioning .glass-panel{opacity:0;transition:opacity .8s ease}
+
+.butterfly{position:absolute;width:42px;height:42px;transform-style:preserve-3d;opacity:0;will-change:transform}
+.butterfly-wing{position:absolute;top:0;width:50%;height:100%;fill:none;stroke-width:1;transform-origin:center right}
+.wing-left{left:0;transform-origin:right center;animation:flapLeft .3s infinite alternate cubic-bezier(.45,.05,.55,.95)}
+.wing-right{right:0;transform-origin:left center;animation:flapRight .3s infinite alternate cubic-bezier(.45,.05,.55,.95)}
+
+.slide-up-fade{opacity:0;transform:translateY(20px);animation:slideUpFade 1.2s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--delay)}
+.cinematic-reveal{opacity:0;filter:blur(12px);transform:scale(.95) translateY(10px);animation:cinematicReveal 2.2s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--delay)}
+
+@keyframes slideUpFade{to{opacity:1;transform:translateY(0)}}
+@keyframes cinematicReveal{50%{opacity:1;filter:blur(2px);transform:scale(1.02) translateY(-2px)}100%{opacity:1;filter:blur(0);transform:scale(1) translateY(0)}}
+@keyframes slowDrift{from{transform:translate(0,0)}to{transform:translate(-5%,-5%)}}
+@keyframes simpleFadeIn{to{opacity:1}}
+@keyframes breathe{from{box-shadow:0 5px 20px rgba(0,0,0,.25),0 0 15px rgba(216,180,226,.07)}to{box-shadow:0 5px 20px rgba(0,0,0,.25),0 0 28px rgba(216,180,226,.22)}}
+@keyframes lockPulse{0%,100%{opacity:.45;transform:scale(.9)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes sparkle{0%,100%{transform:scale(.9) rotate(-5deg);opacity:.5}50%{transform:scale(1.2) rotate(5deg);opacity:1}}
+@keyframes flapLeft{from{transform:rotateY(0) rotateZ(10deg)}to{transform:rotateY(75deg) rotateZ(-10deg)}}
+@keyframes flapRight{from{transform:rotateY(0) rotateZ(-10deg)}to{transform:rotateY(-75deg) rotateZ(10deg)}}
+
+.hidden-svg{display:none}
+
+@media(max-width:600px){
+    .ui-container{padding:10px}
+    .glass-panel{width:calc(100vw - 20px);max-width:550px;max-height:calc(100dvh - 20px);padding:1.6rem .8rem}
+    .button-wrapper{width:min(88vw,350px)}
+}
+
+@media(max-width:380px){
+    .glass-panel{padding:1.3rem .65rem}
+    .label{font-size:.47rem}
+    .title{font-size:1.85rem}
+    .subtitle{font-size:.68rem}
+    .countdown-timer{gap:.2rem;padding:.55rem .35rem}
+    .btn-heart{display:none}
+}
+
+@media(max-height:650px){
+    .glass-panel{padding-top:1rem;padding-bottom:1rem}
+    .label{margin-bottom:.4rem}
+    .title{margin-bottom:.35rem}
+    .subtitle{margin-bottom:.7rem}
+    .countdown-timer{margin-bottom:.8rem}
+}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.1s!important}.slide-up-fade,.cinematic-reveal{opacity:1;filter:none;transform:none}.butterfly{display:none}}
